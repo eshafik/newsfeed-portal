@@ -1,0 +1,33 @@
+
+*.log
+*.pot
+*.pyc
+__pycache__/
+db.sqlite3
+media
+.idea/*
+
+app_logs/*.log.*
+
+# Distribution / packaging
+.Python
+.cache
+.pytest_cache/
+
+# Translations
+*.mo
+
+
+# IPython
+profile_default/
+ipython_config.py
+
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
