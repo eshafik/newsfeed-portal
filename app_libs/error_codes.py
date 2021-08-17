@@ -18,6 +18,7 @@ class GlobalErrorCodes(object):
     ALL_FIELDS_REQUIRED = dict(error_code="AFR400", message='All fields are required')
     VALUE_ERROR = dict(error_code="VE400", message="Value error")
     INVALID_REQUEST = dict(error_code="IR400", message="Invalid request")
+    DATA_NOT_FOUND = dict(error_code="DNF404", message="Data not found")
 
 
 class HTTPErrorCodes(object):
@@ -42,7 +43,6 @@ class AuthenticationErrorCodes(object):
     USER_ACCOUNT_BLOCKED = dict(error_code="UAB400", message="Account is blocked")
     USER_INVALID_CREDENTIALS = dict(error_code="UIC400", message="Invalid credentials")
     NO_CREDENTIALS_PROVIDED = dict(error_code="UNCP401", message="No credentials provided")
-    USER_NOT_FOUND = dict(error_code="UNF404", message="User not found", is_exists=False)
 
 
 class ErrorCodes(object):

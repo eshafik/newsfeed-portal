@@ -57,6 +57,7 @@ THIRD_PARTY = [
 ]
 SYSTEM_APPS = [
     'apps.user',
+    'apps.news',
 ]
 
 INSTALLED_APPS += THIRD_PARTY + SYSTEM_APPS
@@ -169,7 +170,9 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.FormParser',
         'rest_framework.parsers.MultiPartParser',
     ),
-    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+    'DEFAULT_PAGINATION_CLASS': 'app_libs.custom_pagination.CustomPagination',
+    'PAGE_SIZE': 12,
 }
 
 # Logger setup
@@ -212,7 +215,7 @@ JWT_AUTH = {
     'JWT_VERIFY': True,
     'JWT_VERIFY_EXPIRATION': True,
     'JWT_LEEWAY': 0,
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=300),
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=36000),
     'JWT_AUDIENCE': None,
     'JWT_ISSUER': None,
 
@@ -223,3 +226,6 @@ JWT_AUTH = {
     'JWT_AUTH_COOKIE': None,
 }
 # END DJANGO JWT SETTINGS
+
+NEWS_API_KEY = env('NEWS_API_KEY')
+SENDGRID_API_KEY = env('SENDGRID_API_KEY')

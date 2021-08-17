@@ -6,26 +6,32 @@ from django.utils.decorators import method_decorator
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.generics import CreateAPIView
 from rest_framework_jwt.settings import api_settings
 from rest_framework_jwt.views import ObtainJSONWebToken, jwt_response_payload_handler, RefreshJSONWebToken
 
 from app_libs.error_codes import ERROR_CODE
+from apps.news.serializers import UserPreferenceSerializer
 from apps.user.models import User, UserPreference
-from apps.user.validations import user_data_validation
+from apps.user.validations import user_data_validation, preference_data_validation
 
 
 class UserSignUp(APIView):
     """
         User sign up API related Class
-        URL: URL: /api/v1/user/signup/
+        URL: URL: /api/v1/users/signup/
         Method: POST
     """
+    authentication_classes = ()
+    permission_classes = ()
+
     @method_decorator(user_data_validation)
     def post(self, request):
         """
             :param request:
         """
+        if User.objects.filter(username=request.data.get('username'), is_active=True).exists():
+            return Response(data={"message": "User Already Exists!"}, status=status.HTTP_409_CONFLICT)
+
         with transaction.atomic():
             user = User.objects.create_user(request.data.get('username'), request.data.get('password'))
             UserPreference.objects.create(user=user)
@@ -35,7 +41,7 @@ class UserSignUp(APIView):
 class UserToken(ObtainJSONWebToken):
     """
     A custom class for JWT Token
-        URL: /api/v1/user/token/
+        URL: /api/v1/users/token/
         Method: POST
     """
     def post(self, request, *args, **kwargs):
@@ -65,7 +71,7 @@ class UserToken(ObtainJSONWebToken):
 class UserRefreshToken(RefreshJSONWebToken):
     """
     A custom class for JWT Refresh Token
-        URL: /api/v1/user/refresh-token/
+        URL: /api/v1/users/refresh-token/
         Method: POST
     """
 
@@ -97,16 +103,21 @@ class UserRefreshToken(RefreshJSONWebToken):
 class UserPreferenceAPI(APIView):
     """
         User Preference Update API
-        URL: URL: /api/v1/user/preference/
-        Method: PATCH
+        URL: URL: /api/v1/users/preference/
+        Method: GET, PATCH
     """
-    model_name = UserPreference
+    permission_classes = ()
 
+    def get(self, request):
+        return Response(UserPreferenceSerializer(self.request.user.userpreference).data, status=status.HTTP_200_OK)
+
+    @method_decorator(preference_data_validation)
     def patch(self, request):
         user_pref_obj = self.request.user.userpreference
-        pref_keys = ['country', 'source', 'key']
-        data = {key: request.data[key] for key in request.data if (key in pref_keys and isinstance(key, list))}
-        data and user_pref_obj.__dict__.update(data)
+        print("user pref obj", user_pref_obj.__dict__)
+        user_pref_obj.__dict__.update(request.data)
+        user_pref_obj.save()
+        print("after: ", user_pref_obj.__dict__)
         return Response(data={'message': 'Preference Updated Successful'}, status=status.HTTP_200_OK)
 
 

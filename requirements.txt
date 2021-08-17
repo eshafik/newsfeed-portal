@@ -9,3 +9,6 @@ phonenumbers==8.12.22
 djangorestframework-jwt==1.11.0
 django-environ==0.4.5
 coreapi==2.3.3
+newsapi-python==0.2.6
+celery==5.1.2
+sendgrid==6.8.0
