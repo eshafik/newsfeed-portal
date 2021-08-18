@@ -240,11 +240,11 @@ CELERY_TIMEZONE = 'Asia/Dhaka'
 CELERY_BEAT_SCHEDULE = {
     "send_newsletter": {
         "task": "apps.news.tasks.send_newsletter",
-        "schedule": crontab(minute=47, hour=8),
+        "schedule": crontab(minute=0, hour=8),  # EVERYDAY AT 8 AM
     },
 }
 
 # END CELERY SETTINGS
-FROM_EMAIL = env('FROM_EMAIL')
+SENDER_EMAIL = env('SENDER_EMAIL')
 NEWS_API_KEY = env('NEWS_API_KEY')
 SENDGRID_API_KEY = env('SENDGRID_API_KEY')

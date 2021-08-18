@@ -41,7 +41,7 @@ def send_email(to_email: str, subject: str, description: str, url: str) -> tuple
     try:
         sg = SendGridAPIClient(settings.SENDGRID_API_KEY)
         message = Mail(
-            from_email=settings.FROM_EMAIL,
+            from_email=settings.SENDER_EMAIL,
             to_emails=to_email,
             subject=subject,
             html_content=get_newsletter_format(subject, description, url))

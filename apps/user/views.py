@@ -13,7 +13,6 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_jwt.settings import api_settings
 from rest_framework_jwt.views import ObtainJSONWebToken, jwt_response_payload_handler, RefreshJSONWebToken
-from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from app_libs.error_codes import ERROR_CODE
 from apps.news.serializers import UserPreferenceSerializer
@@ -198,12 +197,10 @@ class UserProfileAPI(APIView):
             user.set_password(password)
             user.save()
         if not request_data:
-            print("request_Data: ", request_data)
             return Response({'message': 'Update success'}, status=status.HTTP_200_OK)
         serializer = UserProfileSerializer(self.request.user, request_data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
-            print("==================")
         return Response({'message': 'Update success'}, status=status.HTTP_200_OK)
 
 
@@ -221,10 +218,8 @@ class UserPreferenceAPI(APIView):
     @method_decorator(preference_data_validation)
     def patch(self, request):
         user_pref_obj = self.request.user.userpreference
-        print("user pref obj", user_pref_obj.__dict__)
         user_pref_obj.__dict__.update(request.data)
         user_pref_obj.save()
-        print("after: ", user_pref_obj.__dict__)
         return Response(data={'message': 'Preference Updated Successful'}, status=status.HTTP_200_OK)
 
 

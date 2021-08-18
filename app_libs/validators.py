@@ -18,8 +18,7 @@ import re
 __all__ = [
     "is_email_valid", "is_phone_valid",
     "name_validation", "is_amount_valid",
-    "is_valid_url", "date_validation",
-    "is_sol_email_valid",
+    "is_valid_url", "date_validation"
 ]
 
 
