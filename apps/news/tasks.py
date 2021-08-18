@@ -8,6 +8,7 @@ from apps.user.models import User
 logger = get_task_logger(__name__)
 
 
+# This task will execute everyday at 8 AM and will send the newsletter to the users according to their settings keywords
 @shared_task
 def send_newsletter() -> bool:
     users = User.objects.filter(is_active=True, is_admin=False, is_superuser=False)
