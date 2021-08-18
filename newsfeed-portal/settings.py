@@ -16,6 +16,8 @@ import os
 import environ
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+from celery.schedules import crontab
+
 from app_libs.logger_config import LOGGING
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -227,5 +229,22 @@ JWT_AUTH = {
 }
 # END DJANGO JWT SETTINGS
 
+# CELERY SETTINGS
+CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Asia/Dhaka'
+
+CELERY_BEAT_SCHEDULE = {
+    "send_newsletter": {
+        "task": "apps.news.tasks.send_newsletter",
+        "schedule": crontab(minute=47, hour=8),
+    },
+}
+
+# END CELERY SETTINGS
+FROM_EMAIL = env('FROM_EMAIL')
 NEWS_API_KEY = env('NEWS_API_KEY')
 SENDGRID_API_KEY = env('SENDGRID_API_KEY')
