@@ -55,22 +55,6 @@ def is_email_valid(email: str) -> bool:
         return False
 
 
-def is_sol_email_valid(email: str) -> bool:
-    """
-    Check email is valid of not
-    :return: True or False
-    :rtype: bool
-    """
-    if email:
-        email_regex = re.compile(r'^[a-zA-Z0-9_\-.]+@me-solshare.com$')
-        if not email_regex.match(email):
-            return False
-        else:
-            return True
-    else:
-        return False
-
-
 def is_amount_valid(amount: str) -> bool:
     """
     :param amount:

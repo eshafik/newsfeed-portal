@@ -42,13 +42,14 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(verbose_name='username', max_length=255, unique=True)
     name = models.CharField(max_length=255, blank=True, null=True)
-    email = models.EmailField(blank=True, null=True)
+    email = models.EmailField(blank=True, null=True, unique=True)
     join_date = models.DateTimeField(auto_now_add=True)
     # user boolean field
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
     is_blocked = models.BooleanField(default=False)
-
+    authenticate_pin = models.PositiveSmallIntegerField(default=0)
+    expiration_at = models.DateTimeField(blank=True, null=True)
     objects = UserManager()
 
     USERNAME_FIELD = 'username'

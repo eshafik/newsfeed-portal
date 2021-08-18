@@ -1,12 +1,8 @@
-from django.conf import settings
-
 from celery import shared_task
 from celery.utils.log import get_task_logger
-from celery.schedules import crontab
-from sendgrid.helpers.mail import Mail
-from sendgrid import SendGridAPIClient
 
-from apps.news.utils import get_newsletter_format, send_email, get_news
+
+from apps.news.utils import send_email, get_news
 from apps.user.models import User
 
 logger = get_task_logger(__name__)
@@ -16,9 +12,7 @@ logger = get_task_logger(__name__)
 def send_newsletter() -> bool:
     users = User.objects.filter(is_active=True, is_admin=False, is_superuser=False)
     for user in users:
-        print("username", user.username)
         data = get_news(user.userpreference.country, user.userpreference.source)
-        print("count: ", data)
         for news in data:
             description = news.get('description')
             title = news.get('title')
